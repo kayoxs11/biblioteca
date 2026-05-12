@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca — Cadastro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Painel esquerdo -->
+  <div class="side">
+    <div class="logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+
+    <div class="side-headline">
+      <h1>Seu mundo<br/>de <span>livros</span><br/>começa aqui.</h1>
+      <p>Cadastre-se gratuitamente e tenha acesso ao acervo completo da nossa biblioteca digital.</p>
+    </div>
+
+    <div class="side-stats">
+      <div class="stat"><div class="stat-dot"></div><span>Mais de 10.000 títulos disponíveis</span></div>
+      <div class="stat"><div class="stat-dot"></div><span>Empréstimos online e presenciais</span></div>
+      <div class="stat"><div class="stat-dot"></div><span>Renovação fácil pelo sistema</span></div>
+    </div>
+  </div>
+
+  <!-- Formulário -->
+  <div class="form-panel">
+    <div class="form-header">
+      <h2>Criar conta</h2>
+      <p>Já tem cadastro? <a href="{% url 'login' %}">Faça login</a></p>
+    </div>
+
+    <form id="cadastroForm" method="POST" action="{% url 'cadastro' %}" novalidate>
+      {% csrf_token %}
+
+      <div class="form-row">
+        <div class="field">
+          <label for="nome">Nome</label>
+          <div class="input-wrap">
+            <input type="text" id="nome" name="nome" placeholder="Name" autocomplete="given-name"/>
+            <span class="icon">👤</span>
+          </div>
+          <span class="msg" id="nome-msg"></span>
+        </div>
+
+        <div class="field">
+          <label for="sobrenome">Sobrenome</label>
+          <div class="input-wrap">
+            <input type="text" id="sobrenome" name="sobrenome" placeholder="surname" autocomplete="family-name"/>
+            <span class="icon">👤</span>
+          </div>
+          <span class="msg" id="sobrenome-msg"></span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <div class="input-wrap">
+          <input type="email" id="email" name="email" placeholder="your-email@gmail.com" autocomplete="email"/>
+          <span class="icon">✉️</span>
+        </div>
+        <span class="msg" id="email-msg"></span>
+      </div>
+
+      <div class="field">
+        <label for="cpf">CPF</label>
+        <div class="input-wrap">
+          <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" autocomplete="off"/>
+          <span class="icon">🪪</span>
+        </div>
+        <span class="msg" id="cpf-msg"></span>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="telefone">Telefone</label>
+          <div class="input-wrap">
+            <input type="tel" id="telefone" name="telefone" placeholder="(81) 99999-9999" maxlength="15" autocomplete="tel"/>
+            <span class="icon">📞</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="tipo">Tipo de usuário</label>
+          <div class="input-wrap">
+            <select id="tipo" name="tipo">
+              <option value="">Selecione...</option>
+              <option value="aluno">Aluno</option>
+              <option value="professor">Professor</option>
+              <option value="externo">Alguem externo</option>
+            </select>
+            <span class="icon">🎓</span>
+          </div>
+          <span class="msg" id="tipo-msg"></span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="senha">Senha</label>
+          <div class="input-wrap">
+            <input type="password" id="senha" name="senha" placeholder="Mínimo 8 caracteres" autocomplete="new-password"/>
+            <span class="icon">🔒</span>
+            <button type="button" class="eye-btn" id="toggleSenha" aria-label="Ver senha">👁️</button>
+          </div>
+          <span class="msg" id="senha-msg"></span>
+        </div>
+
+        <div class="field">
+          <label for="confirmar">Confirmar senha</label>
+          <div class="input-wrap">
+            <input type="password" id="confirmar" name="confirmar" placeholder="Repita a senha" autocomplete="new-password"/>
+            <span class="icon">🔒</span>
+            <button type="button" class="eye-btn" id="toggleConfirmar" aria-label="Ver confirmação">👁️</button>
+          </div>
+          <span class="msg" id="confirmar-msg"></span>
+        </div>
+      </div>
+
+      <div class="terms">
+        <input type="checkbox" id="termos" name="termos"/>
+        <label for="termos" style="text-transform:none; letter-spacing:0; font-size:0.82rem; color:var(--muted);">
+          Li e aceito os <a href="">Termos de Uso</a> e a <a href="">Política de Privacidade</a> da Biblioteca.
+        </label>
+      </div>
+
+      <button type="submit" class="btn-submit">CRIAR MINHA CONTA</button>
+
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Cadastro realizado com sucesso!</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Painel esquerdo -->
+  <div class="side">
+    <div class="logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+
+    <div class="side-headline">
+      <h1>Bem-vindo<br/>de <span>volta!</span></h1>
+      <p>Acesse sua conta para gerenciar empréstimos, reservas e muito mais.</p>
+    </div>
+
+    <div class="side-stats">
+      <div class="stat"><div class="stat-dot"></div><span>Mais de 10.000 títulos disponíveis</span></div>
+      <div class="stat"><div class="stat-dot"></div><span>Empréstimos online e presenciais</span></div>
+      <div class="stat"><div class="stat-dot"></div><span>Renovação fácil pelo sistema</span></div>
+    </div>
+  </div>
+
+  <!-- Formulário -->
+  <div class="form-panel">
+    <div class="form-header">
+      <h2>Entrar</h2>
+      <p>Não tem conta? <a href="{% url 'cadastro' %}">Cadastre-se</a></p>
+    </div>
+
+    {% if erro %}
+    <div class="alert-erro">⚠️ {{ erro }}</div>
+    {% endif %}
+
+    <form id="loginForm" method="POST" action="{% url 'login' %}" novalidate>
+      {% csrf_token %}
+
+      <div class="field">
+        <label for="email">E-mail</label>
+        <div class="input-wrap">
+          <input type="email" id="email" name="email" placeholder="joao@email.com" autocomplete="email"/>
+          <span class="icon">✉️</span>
+        </div>
+        <span class="msg" id="email-msg"></span>
+      </div>
+
+      <div class="field">
+        <label for="senha">Senha</label>
+        <div class="input-wrap">
+          <input type="password" id="senha" name="senha" placeholder="Sua senha" autocomplete="current-password"/>
+          <span class="icon">🔒</span>
+          <button type="button" class="eye-btn" id="toggleSenha" aria-label="Ver senha">👁️</button>
+        </div>
+        <span class="msg" id="senha-msg"></span>
+      </div>
+
+      <button type="submit" class="btn-submit" style="margin-top:0.5rem;">ENTRAR</button>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  // Mostrar/ocultar senha
+  document.getElementById('toggleSenha').addEventListener('click', function () {
+    const inp = document.getElementById('senha');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    this.textContent = inp.type === 'password' ? '👁️' : '🙈';
+  });
+
+  // Validação front-end
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    let ok = true;
+
+    ['email', 'senha'].forEach(id => {
+      const msg = document.getElementById(id + '-msg');
+      const inp = document.getElementById(id);
+      if (msg) { msg.textContent = ''; msg.className = 'msg'; }
+      if (inp) inp.classList.remove('error');
+    });
+
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setErr('email', 'E-mail inválido.'); ok = false;
+    }
+    if (!senha) {
+      setErr('senha', 'Digite sua senha.'); ok = false;
+    }
+
+    if (ok) this.submit();
+  });
+
+  function setErr(id, msg) {
+    const el  = document.getElementById(id + '-msg');
+    const inp = document.getElementById(id);
+    if (el)  { el.textContent = msg; el.className = 'msg error-msg'; }
+    if (inp) inp.classList.add('error');
+  }
+</script>
+</body>
+</html>

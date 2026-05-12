@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca — Novo Livro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
+      <a href="{% url 'novo_livro' %}" class="nav-link active">Novo Livro</a>
+      <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
+    </div>
+    <a href="{% url 'cadastro' %}" class="nav-btn">+ Cadastrar</a>
+  </nav>
+
+  <main class="main-content">
+
+    <div class="page-header">
+      <div>
+        <p class="page-label">ACERVO</p>
+        <h1 class="page-title">Cadastrar novo livro</h1>
+        <p class="page-sub">Preencha as informações do livro para adicioná-lo ao acervo.</p>
+      </div>
+      <a href="{% url 'acervo' %}" class="btn-outline">← Voltar ao acervo</a>
+    </div>
+
+    <div class="form-card">
+      <form id="livroForm" method="POST" action="{% url 'novo_livro' %}" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        <!-- Capa -->
+        <div class="field">
+          <label>Capa do livro</label>
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-preview" id="uploadPreview">
+              <span class="upload-icon">📷</span>
+              <p>Clique ou arraste uma imagem aqui</p>
+              <small>JPG, PNG — opcional</small>
+            </div>
+            <img id="previewImg" src="" alt="Preview" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:10px;"/>
+            <input type="file" id="capa" name="capa" accept="image/*" style="display:none;"/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="titulo">Título *</label>
+            <div class="input-wrap">
+              <input type="text" id="titulo" name="titulo" placeholder="Ex: O Pequeno Príncipe"/>
+              <span class="icon">📖</span>
+            </div>
+            <span class="msg" id="titulo-msg"></span>
+          </div>
+
+          <div class="field">
+            <label for="autor">Autor *</label>
+            <div class="input-wrap">
+              <input type="text" id="autor" name="autor" placeholder="Ex: Antoine de Saint-Exupéry"/>
+              <span class="icon">✍️</span>
+            </div>
+            <span class="msg" id="autor-msg"></span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="isbn">ISBN</label>
+            <div class="input-wrap">
+              <input type="text" id="isbn" name="isbn" placeholder="000-00-0000-000-0" maxlength="17"/>
+              <span class="icon">🔢</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ano">Ano de publicação</label>
+            <div class="input-wrap">
+              <input type="number" id="ano" name="ano" placeholder="Ex: 2024" min="1000" max="2099"/>
+              <span class="icon">📅</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="genero">Gênero</label>
+            <div class="input-wrap">
+              <select id="genero" name="genero">
+                <option value="">Selecione...</option>
+                <option value="ficcao">Ficção</option>
+                <option value="nao_ficcao">Não-ficção</option>
+                <option value="romance">Romance</option>
+                <option value="aventura">Aventura</option>
+                <option value="ciencia">Ciência</option>
+                <option value="historia">História</option>
+                <option value="infantil">Infantil</option>
+                <option value="outros">Outros</option>
+              </select>
+              <span class="icon">🏷️</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="quantidade">Quantidade de exemplares *</label>
+            <div class="input-wrap">
+              <input type="number" id="quantidade" name="quantidade" placeholder="Ex: 3" min="1"/>
+              <span class="icon">🔢</span>
+            </div>
+            <span class="msg" id="quantidade-msg"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="sinopse">Sinopse</label>
+          <textarea id="sinopse" name="sinopse" rows="4" placeholder="Breve descrição do livro..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <a href="{% url 'acervo' %}" class="btn-outline">Cancelar</a>
+          <button type="submit" class="btn-submit">CADASTRAR LIVRO</button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <div class="toast" id="toast">✅ Livro cadastrado com sucesso!</div>
+
+  <script src="{% static 'js/script.js' %}"></script>
+  <script>
+    // Preview da capa
+    const uploadArea = document.getElementById('uploadArea');
+    const inputCapa  = document.getElementById('capa');
+    const previewImg = document.getElementById('previewImg');
+    const previewBox = document.getElementById('uploadPreview');
+
+    uploadArea.addEventListener('click', () => inputCapa.click());
+
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag'));
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault(); uploadArea.classList.remove('drag');
+      const file = e.dataTransfer.files[0];
+      if (file) showPreview(file);
+    });
+
+    inputCapa.addEventListener('change', function () {
+      if (this.files[0]) showPreview(this.files[0]);
+    });
+
+    function showPreview(file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewImg.src = e.target.result;
+        previewImg.style.display = 'block';
+        previewBox.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Validação
+    document.getElementById('livroForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      let ok = true;
+
+      ['titulo', 'autor', 'quantidade'].forEach(id => {
+        const el = document.getElementById(id);
+        const msg = document.getElementById(id + '-msg');
+        if (msg) msg.className = 'msg';
+        el.classList.remove('error');
+      });
+
+      const titulo     = document.getElementById('titulo').value.trim();
+      const autor      = document.getElementById('autor').value.trim();
+      const quantidade = document.getElementById('quantidade').value;
+
+      if (!titulo)     { showErr('titulo', 'Informe o título.');        ok = false; }
+      if (!autor)      { showErr('autor', 'Informe o autor.');          ok = false; }
+      if (!quantidade) { showErr('quantidade', 'Informe a quantidade.'); ok = false; }
+
+      if (ok) {
+    this.submit();
+  }
+    });
+
+    function showErr(id, msg) {
+      const el  = document.getElementById(id);
+      const msgEl = document.getElementById(id + '-msg');
+      if (el) el.classList.add('error');
+      if (msgEl) { msgEl.textContent = msg; msgEl.className = 'msg error-msg'; }
+    }
+  </script>
+</body>
+</html>

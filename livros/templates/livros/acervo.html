@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca — Acervo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'acervo' %}" class="nav-link active">Acervo</a>
+      <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
+      <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
+    </div>
+    <a href="{% url 'novo_livro' %}" class="nav-btn">+ Novo livro</a>
+  </nav>
+
+  <!-- CONTEÚDO -->
+  <main class="main-content">
+
+    <div class="page-header">
+      <div>
+        <p class="page-label">GERENCIAMENTO DE ACERVO</p>
+        <h1 class="page-title">Livros cadastrados</h1>
+        <p class="page-sub">Consulte, filtre e gerencie os livros registrados na biblioteca.</p>
+      </div>
+      <a href="{% url 'novo_livro' %}" class="btn-gold">+ Novo livro</a>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-num">{{ livros.count }}</span>
+        <span class="stat-label">Total no acervo</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">{{ livros.count }}</span>
+        <span class="stat-label">Disponíveis</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">0</span>
+        <span class="stat-label">Emprestados</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">0</span>
+        <span class="stat-label">Reservados</span>
+      </div>
+    </div>
+
+    <!-- BUSCA -->
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="busca" placeholder="Buscar por título, autor ou ISBN..."/>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-wrap">
+      <table class="livros-table">
+        <thead>
+          <tr>
+            <th>Capa</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>ISBN</th>
+            <th>Quantidade</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-body">
+
+          {% if livros %}
+            {% for livro in livros %}
+            <tr>
+              <td>
+                {% if livro.capa %}
+                  <img src="{{ livro.capa.url }}" style="width:45px; height:60px; object-fit:cover; border-radius:6px;"/>
+                {% else %}
+                  <span style="font-size:1.8rem;">📖</span>
+                {% endif %}
+              </td>
+              <td><strong>{{ livro.titulo }}</strong></td>
+              <td>{{ livro.autor }}</td>
+              <td>{{ livro.isbn|default:"—" }}</td>
+              <td>{{ livro.quantidade }}</td>
+              <td><span class="perfil-badge">Disponível</span></td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr class="empty-row">
+              <td colspan="6">
+                <div class="empty-state">
+                  <span>📖</span>
+                  <p>Nenhum livro cadastrado ainda.</p>
+                  <a href="{% url 'novo_livro' %}" class="btn-gold small">Cadastrar primeiro livro</a>
+                </div>
+              </td>
+            </tr>
+          {% endif %}
+
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="{% static 'js/script.js' %}"></script>
+  <script>
+    document.getElementById('busca').addEventListener('input', function () {
+      const termo = this.value.toLowerCase();
+      document.querySelectorAll('#tabela-body tr:not(.empty-row)').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(termo) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
