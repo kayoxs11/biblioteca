@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Converter Reserva</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+    <a href="{% url 'gerenciar' %}" class="nav-btn">← Voltar</a>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Converter Reserva em Empréstimo</h1>
+    </div>
+
+    <div class="form-card" style="max-width: 600px; margin: 0 auto;">
+      <h2>{{ livro.titulo }}</h2>
+      <p><strong>Autor:</strong> {{ livro.autor }}</p>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="field">
+          <label>Data de Devolução Prevista *</label>
+          <input type="date" name="data_devolucao" required>
+        </div>
+
+        <div class="form-actions">
+          <a href="{% url 'gerenciar' %}" class="btn-outline">Cancelar</a>
+          <button type="submit" class="btn-gold">✅ Confirmar Empréstimo</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

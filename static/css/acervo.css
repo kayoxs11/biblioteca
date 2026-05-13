@@ -1,6 +1,5 @@
 /* ================================================
-   acervo.css — Navbar + Páginas internas
-   Caminho: static/css/acervo.css
+   acervo.css — Otimizado
    ================================================ */
 
 /* ---- Reset body para páginas internas ---- */
@@ -68,8 +67,15 @@ body::before {
   transition: color 0.2s, background 0.2s;
 }
 
-.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-.nav-link.active { color: var(--accent); background: rgba(201,168,76,0.08); }
+.nav-link:hover { 
+  color: var(--text); 
+  background: rgba(255,255,255,0.05); 
+}
+
+.nav-link.active { 
+  color: var(--accent); 
+  background: rgba(201,168,76,0.08); 
+}
 
 .nav-btn {
   padding: 0.45rem 1.1rem;
@@ -79,17 +85,13 @@ body::before {
   font-weight: 700;
   border-radius: 8px;
   text-decoration: none;
-  transition: background 0.2s, transform 0.15s;
+  transition: all 0.2s;
 }
 
-.nav-btn:hover { background: var(--accent2); transform: translateY(-1px); }
-
-.nav-btn.sair {
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid var(--border);
+.nav-btn:hover { 
+  background: var(--accent2); 
+  transform: translateY(-1px); 
 }
-.nav-btn.sair:hover { color: var(--error); border-color: var(--error); background: rgba(224,92,92,0.07); }
 
 /* ==============================
    LAYOUT PRINCIPAL
@@ -135,7 +137,7 @@ body::before {
 }
 
 /* ==============================
-   BOTÕES
+   BOTÕES GERAIS
 ============================== */
 .btn-gold {
   display: inline-flex;
@@ -149,7 +151,7 @@ body::before {
   font-weight: 700;
   border-radius: 10px;
   text-decoration: none;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: all 0.2s;
   white-space: nowrap;
 }
 
@@ -159,7 +161,10 @@ body::before {
   box-shadow: 0 6px 20px rgba(201,168,76,0.25);
 }
 
-.btn-gold.small { padding: 0.5rem 1rem; font-size: 0.8rem; }
+.btn-gold.small { 
+  padding: 0.5rem 1rem; 
+  font-size: 0.8rem; 
+}
 
 .btn-outline {
   display: inline-flex;
@@ -171,14 +176,62 @@ body::before {
   font-weight: 500;
   border-radius: 10px;
   text-decoration: none;
-  transition: border-color 0.2s, color 0.2s;
+  transition: all 0.2s;
   white-space: nowrap;
 }
 
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.btn-outline:hover { 
+  border-color: var(--accent); 
+  color: var(--accent); 
+}
 
 /* ==============================
-   STATS
+   BOTÕES DE AÇÃO (Reservar / Emprestar)
+============================== */
+.acoes {
+  white-space: nowrap;
+  text-align: center;
+  min-width: 180px;
+}
+
+.btn-small {
+  display: inline-block;
+  padding: 7px 14px;
+  margin: 3px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.btn-reservar {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-reservar:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-emprestar {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-emprestar:hover {
+  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* ==============================
+   STATS + BUSCA + TABELA
 ============================== */
 .stats-row {
   display: grid;
@@ -192,13 +245,13 @@ body::before {
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 1.2rem 1.4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: all 0.2s;
 }
 
-.stat-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-2px); }
+.stat-card:hover { 
+  border-color: rgba(201,168,76,0.3); 
+  transform: translateY(-2px); 
+}
 
 .stat-num {
   font-family: 'Playfair Display', serif;
@@ -207,11 +260,12 @@ body::before {
   color: var(--accent);
 }
 
-.stat-label { font-size: 0.8rem; color: var(--muted); }
+.stat-label { 
+  font-size: 0.8rem; 
+  color: var(--muted); 
+}
 
-/* ==============================
-   BUSCA
-============================== */
+/* Busca */
 .search-bar {
   position: relative;
   margin-bottom: 1.5rem;
@@ -220,7 +274,8 @@ body::before {
 .search-icon {
   position: absolute;
   left: 14px;
-  top: 50%; transform: translateY(-50%);
+  top: 50%; 
+  transform: translateY(-50%);
   font-size: 0.95rem;
   pointer-events: none;
 }
@@ -232,10 +287,9 @@ body::before {
   border-radius: 12px;
   padding: 0.8rem 1rem 0.8rem 2.8rem;
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
   font-size: 0.9rem;
   outline: none;
-  transition: border-color 0.25s, box-shadow 0.25s;
+  transition: all 0.25s;
 }
 
 .search-bar input:focus {
@@ -243,9 +297,7 @@ body::before {
   box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
 }
 
-/* ==============================
-   TABELA
-============================== */
+/* Tabela */
 .table-wrap {
   background: var(--panel);
   border: 1px solid var(--border);
@@ -280,8 +332,22 @@ body::before {
   border-bottom: 1px solid rgba(42,45,53,0.5);
 }
 
-.livros-table tr:last-child td { border-bottom: none; }
-.livros-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+.livros-table tbody tr:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Status */
+.perfil-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.disponivel { background-color: #10b981; color: white; }
+.emprestado { background-color: #ef4444; color: white; }
+.reservado  { background-color: #f59e0b; color: white; }
 
 .empty-state {
   display: flex;
@@ -290,192 +356,15 @@ body::before {
   gap: 0.8rem;
   padding: 3rem;
   color: var(--muted);
-  font-size: 0.9rem;
 }
 
-.empty-state span { font-size: 2.5rem; }
+.empty-state span { font-size: 2.8rem; }
 
-/* ==============================
-   FORMULÁRIO LIVRO
-============================== */
-.form-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2.5rem;
-}
-
-.upload-area {
-  width: 100%;
-  height: 200px;
-  border: 2px dashed var(--border);
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: border-color 0.25s, background 0.25s;
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-.upload-area:hover, .upload-area.drag {
-  border-color: var(--accent);
-  background: rgba(201,168,76,0.04);
-}
-
-.upload-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
-.upload-icon { font-size: 2rem; }
-
-textarea {
-  width: 100%;
-  background: var(--input-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.75rem 1rem;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.88rem;
-  outline: none;
-  resize: vertical;
-  transition: border-color 0.25s, box-shadow 0.25s;
-}
-
-textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
-}
-
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-/* ==============================
-   CONTA / PERFIL
-============================== */
-.perfil-wrap {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.perfil-card {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 2rem 2.5rem;
-  border-bottom: 1px solid var(--border);
-  background: rgba(201,168,76,0.04);
-}
-
-.avatar {
-  width: 72px; height: 72px;
-  background: rgba(201,168,76,0.15);
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 2rem;
-  flex-shrink: 0;
-}
-
-.perfil-nome {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-}
-
-.perfil-badge {
-  display: inline-block;
-  padding: 0.25rem 0.8rem;
-  background: rgba(201,168,76,0.15);
-  color: var(--accent);
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-}
-
-.dados-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
-.dado-item {
-  padding: 1.4rem 2.5rem;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.dado-item:nth-child(even) { border-right: none; }
-.dado-item:nth-last-child(-n+2) { border-bottom: none; }
-
-.dado-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
-.dado-valor {
-  font-size: 0.95rem;
-  color: var(--text);
-  font-weight: 500;
-}
-
-.conta-actions {
-  padding: 1.5rem 2.5rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn-sair {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.5rem;
-  border: 1px solid var(--error);
-  color: var(--error);
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.btn-sair:hover {
-  background: rgba(224,92,92,0.1);
-  transform: translateY(-1px);
-}
-
+/* Responsivo */
 @media (max-width: 768px) {
   .navbar { padding: 0 1.2rem; }
   .nav-links { display: none; }
   .main-content { padding: 1.5rem 1rem 3rem; }
   .stats-row { grid-template-columns: 1fr 1fr; }
   .page-title { font-size: 1.6rem; }
-  .dados-grid { grid-template-columns: 1fr; }
-  .dado-item { border-right: none; }
-  .dado-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
-  .dado-item:last-child { border-bottom: none; }
-  .form-card { padding: 1.5rem; }
-  .perfil-card { flex-direction: column; text-align: center; }
 }
