@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca — Minha Conta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
+      <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
+      <a href="{% url 'conta' %}" class="nav-link active">Minha Conta</a>
+    </div>
+    <!-- Botão sair -->
+    <a href="{% url 'cadastro' %}" class="nav-btn sair">Sair →</a>
+  </nav>
+
+  <main class="main-content">
+
+    <div class="page-header">
+      <div>
+        <p class="page-label">PERFIL</p>
+        <h1 class="page-title">Minha conta</h1>
+        <p class="page-sub">Visualize e gerencie seus dados cadastrais.</p>
+      </div>
+    </div>
+
+    {% if request.user.is_authenticated %}
+      <div class="perfil-wrap">
+
+        <div class="perfil-card">
+          <div class="avatar">
+            <span>👤</span>
+          </div>
+          <div class="perfil-info">
+            <h2 class="perfil-nome">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+            <span class="perfil-badge">Usuário autenticado</span>
+          </div>
+        </div>
+
+        <div class="dados-grid">
+          <div class="dado-item">
+            <span class="dado-label">Nome completo</span>
+            <span class="dado-valor">{{ request.user.first_name }} {{ request.user.last_name }}</span>
+          </div>
+          <div class="dado-item">
+            <span class="dado-label">E-mail</span>
+            <span class="dado-valor">{{ request.user.email }}</span>
+          </div>
+          <div class="dado-item">
+            <span class="dado-label">Status</span>
+            <span class="dado-valor">Logado</span>
+          </div>
+        </div>
+
+        <div class="conta-actions">
+          <a href="{% url 'cadastro' %}" class="btn-sair">
+            <span>→</span> Sair da conta
+          </a>
+        </div>
+      </div>
+    {% else %}
+      <div class="form-card" style="max-width: 620px; margin: 0 auto; text-align: center; padding: 3rem;">
+        <h2>Dados da conta indisponíveis</h2>
+        <p style="margin: 1rem 0 2rem; color: #9ca3af;">
+          Esta página não recebe dados de usuário diretamente no template. Faça login para acessar sua conta.
+        </p>
+        <a href="{% url 'login' %}" class="btn-gold">Entrar</a>
+      </div>
+    {% endif %}
+  </main>
+
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
