@@ -11,31 +11,29 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="nav-logo">
-      <div class="logo-icon">📚</div>
-      <span class="logo-text">Biblioteca</span>
-    </div>
-    <div class="nav-links">
-      <a href="{% url 'acervo' %}" class="nav-link active">Acervo</a>
-      <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
-      <a href="{% url 'gerenciar' %}" class="nav-link">Gerenciar</a>   <!-- NOVO -->
-      <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
-    </div> 
-    <a href="{% url 'novo_livro' %}" class="nav-btn">+ Novo livro</a>
-  </nav>
+  <!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <div class="logo-icon">📚</div>
+    <span class="logo-text">Biblioteca</span>
+  </div>
+  <div class="nav-links">
+    <a href="{% url 'acervo' %}" class="nav-link active">Acervo</a>
+    <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
+    <a href="{% url 'gerenciar' %}" class="nav-link">Gerenciar</a>
+    <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
+  </div>
 
-  <main class="main-content">
-
-    <div class="page-header">
-      <div>
-        <p class="page-label">GERENCIAMENTO DE ACERVO</p>
-        <h1 class="page-title">Livros cadastrados</h1>
-        <p class="page-sub">Consulte, filtre e gerencie os livros registrados na biblioteca.</p>
-      </div>
-      <a href="{% url 'novo_livro' %}" class="btn-gold">+ Novo livro</a>
+<main class="main-content">
+  <div class="page-header">
+    <div>
+      <p class="page-label">GERENCIAMENTO DE ACERVO</p>
+      <h1 class="page-title">Livros cadastrados</h1>
+      <p class="page-sub">Consulte, filtre e gerencie os livros registrados na biblioteca.</p>
     </div>
+    <!-- Botão mantido apenas aqui (mais visível) -->
+    <a href="{% url 'novo_livro' %}" class="btn-gold">+ Novo livro</a>
+  </div>
 
     <!-- STATS -->
     <div class="stats-row">
