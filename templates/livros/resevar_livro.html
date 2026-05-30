@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reservar Livro</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+    <a href="{% url 'acervo' %}" class="nav-btn">← Voltar ao Acervo</a>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <p class="page-label">ACERVO</p>
+        <h1 class="page-title">Reservar Livro</h1>
+        <p class="page-sub">Confirme a reserva do livro abaixo.</p>
+      </div>
+    </div>
+
+    <div class="form-card" style="max-width: 600px; margin: 0 auto;">
+      <h2 style="margin-bottom: 1.5rem; color: var(--accent);">{{ livro.titulo }}</h2>
+      <p><strong>Autor:</strong> {{ livro.autor }}</p>
+      <p><strong>ISBN:</strong> {{ livro.isbn|default:"—" }}</p>
+
+      <hr style="margin: 2rem 0; border-color: var(--border);">
+
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="livro_id" value="{{ livro.id }}">
+
+        <div class="form-actions">
+          <a href="{% url 'acervo' %}" class="btn-outline">Cancelar</a>
+          <button type="submit" class="btn-gold">✅ Confirmar Reserva</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+</body>
+</html>

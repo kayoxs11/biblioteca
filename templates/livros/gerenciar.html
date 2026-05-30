@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerenciar — Biblioteca</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
+      <a href="{% url 'gerenciar' %}" class="nav-link active">Gerenciar</a>
+      <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
+    </div>
+    <a href="{% url 'acervo' %}" class="nav-btn">← Voltar</a>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Reservas & Empréstimos</h1>
+    </div>
+
+    <h2 style="margin: 2rem 0 1rem; color: #3b82f6;">📌 Reservas Ativas ({{ reservas.count }})</h2>
+    <div class="table-wrap">
+      <table class="livros-table">
+        <thead>
+          <tr><th>Livro</th><th>Data</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+          {% for r in reservas %}
+          <tr>
+            <td><strong>{{ r.livro.titulo }}</strong></td>
+            <td>{{ r.data_reserva|date:"d/m/Y H:i" }}</td>
+            <td>
+              <a href="{% url 'converter_reserva' r.id %}" class="btn-small btn-emprestar">🔄 Converter</a>
+              <a href="{% url 'cancelar_reserva' r.id %}" class="btn-small" style="background:#ef4444;color:white;" onclick="return confirm('Cancelar?')">❌</a>
+            </td>
+          </tr>
+          {% empty %}<tr><td colspan="3" style="text-align:center;padding:2rem;">Nenhuma reserva.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <h2 style="margin: 3rem 0 1rem; color: #10b981;">📚 Empréstimos Ativos ({{ emprestimos.count }})</h2>
+    <div class="table-wrap">
+      <table class="livros-table">
+        <thead>
+          <tr><th>Livro</th><th>Emprestado</th><th>Devolução</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+          {% for e in emprestimos %}
+          <tr>
+            <td><strong>{{ e.livro.titulo }}</strong></td>
+            <td>{{ e.data_emprestimo|date:"d/m/Y" }}</td>
+            <td>{{ e.data_devolucao_prevista|date:"d/m/Y" }}</td>
+            <td><a href="{% url 'devolver_livro' e.id %}" class="btn-small btn-reservar">✅ Devolver</a></td>
+          </tr>
+          {% empty %}<tr><td colspan="4" style="text-align:center;padding:2rem;">Nenhum empréstimo ativo.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>

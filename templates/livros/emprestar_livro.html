@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emprestar Livro</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">Biblioteca</span>
+    </div>
+    <a href="{% url 'acervo' %}" class="nav-btn">← Voltar ao Acervo</a>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <p class="page-label">EMPRÉSTIMO</p>
+        <h1 class="page-title">{{ livro.titulo }}</h1>
+        <p class="page-sub">Preencha os dados do empréstimo</p>
+      </div>
+    </div>
+
+    <div class="form-card" style="max-width: 650px; margin: 0 auto;">
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="field">
+          <label>Data de Devolução Prevista *</label>
+          <input type="date" name="data_devolucao" required>
+        </div>
+
+        <div class="field">
+          <label>Endereço de Entrega</label>
+          <textarea name="endereco" rows="3" placeholder="Rua, número, bairro..."></textarea>
+        </div>
+
+        <div class="field">
+          <label>CEP</label>
+          <input type="text" name="cep" placeholder="00000-000" maxlength="9">
+        </div>
+
+        <div class="form-actions">
+          <a href="{% url 'acervo' %}" class="btn-outline">Cancelar</a>
+          <button type="submit" class="btn-gold">✅ Confirmar Empréstimo</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+</body>
+</html>
