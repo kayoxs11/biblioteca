@@ -138,7 +138,16 @@ def login_view(request):
 
 
 def conta(request):
-    return render(request, 'livros/conta.html')
+    usuario_id = request.session.get('usuario_id')
+
+    if not usuario_id:
+        return redirect('login')
+
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+
+    return render(request, 'livros/conta.html', {
+        'usuario': usuario
+    })
 
 
 # ====================== GERENCIAMENTO ======================
