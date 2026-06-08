@@ -39,38 +39,48 @@
     {% if request.user.is_authenticated %}
       <div class="perfil-wrap">
 
-        <div class="perfil-card">
-          <div class="avatar">
-            <span>👤</span>
-          </div>
-          <div class="perfil-info">
-            <h2 class="perfil-nome">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
-            <span class="perfil-badge">Usuário autenticado</span>
-          </div>
-        </div>
+{% if usuario %}
+  <div class="perfil-wrap">
 
-        <div class="dados-grid">
-          <div class="dado-item">
-            <span class="dado-label">Nome completo</span>
-            <span class="dado-valor">{{ request.user.first_name }} {{ request.user.last_name }}</span>
-          </div>
-          <div class="dado-item">
-            <span class="dado-label">E-mail</span>
-            <span class="dado-valor">{{ request.user.email }}</span>
-          </div>
-          <div class="dado-item">
-            <span class="dado-label">Status</span>
-            <span class="dado-valor">Logado</span>
-          </div>
-        </div>
-
-        <div class="conta-actions">
-          <a href="{% url 'cadastro' %}" class="btn-sair">
-            <span>→</span> Sair da conta
-          </a>
-        </div>
+    <div class="perfil-card">
+      <div class="avatar">
+        <span>👤</span>
       </div>
-    {% else %}
+      <div class="perfil-info">
+        <h2 class="perfil-nome">{{ usuario.nome }} {{ usuario.sobrenome }}</h2>
+        <span class="perfil-badge">{{ usuario.tipo }}</span>
+      </div>
+    </div>
+
+    <div class="dados-grid">
+      <div class="dado-item">
+        <span class="dado-label">Nome completo</span>
+        <span class="dado-valor">{{ usuario.nome }} {{ usuario.sobrenome }}</span>
+      </div>
+
+      <div class="dado-item">
+        <span class="dado-label">E-mail</span>
+        <span class="dado-valor">{{ usuario.email }}</span>
+      </div>
+
+      <div class="dado-item">
+        <span class="dado-label">CPF</span>
+        <span class="dado-valor">{{ usuario.cpf }}</span>
+      </div>
+
+      <div class="dado-item">
+        <span class="dado-label">Telefone</span>
+        <span class="dado-valor">{{ usuario.telefone }}</span>
+      </div>
+
+      <div class="dado-item">
+        <span class="dado-label">Status</span>
+        <span class="dado-valor">Logado</span>
+      </div>
+    </div>
+
+  </div>
+{% else %}
       <div class="form-card" style="max-width: 620px; margin: 0 auto; text-align: center; padding: 3rem;">
         <h2>Dados da conta indisponíveis</h2>
         <p style="margin: 1rem 0 2rem; color: #9ca3af;">
