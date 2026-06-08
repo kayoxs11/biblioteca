@@ -557,3 +557,70 @@ body::before {
     justify-content: stretch;
   }
 }
+
+.perfil-wrap {
+    max-width: 900px;
+    margin-top: 2rem;
+}
+
+.modern-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #c9a84c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.perfil-label {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.perfil-nome {
+    margin: .4rem 0;
+    color: #fff;
+}
+
+.modern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.dado-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 1rem;
+}
+
+.dado-label {
+    display: block;
+    color: #999;
+    font-size: .85rem;
+    margin-bottom: .5rem;
+}
+
+.dado-valor {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.status-ok {
+    color: #22c55e;
+}
