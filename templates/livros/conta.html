@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,29 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Biblioteca — Minha Conta</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  {% load static %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">
       <div class="logo-icon">📚</div>
       <span class="logo-text">Biblioteca</span>
     </div>
+
     <div class="nav-links">
       <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
       <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
       <a href="{% url 'conta' %}" class="nav-link active">Minha Conta</a>
     </div>
-    <!-- Botão sair -->
+
     <a href="{% url 'cadastro' %}" class="nav-btn sair">Sair →</a>
   </nav>
 
   <main class="main-content">
-
     <div class="page-header">
       <div>
         <p class="page-label">PERFIL</p>
@@ -36,62 +35,51 @@
       </div>
     </div>
 
-    {% if request.user.is_authenticated %}
+    {% if usuario %}
       <div class="perfil-wrap">
+        <div class="perfil-card">
+          <div class="avatar">
+            <span>👤</span>
+          </div>
 
-{% if usuario %}
-  <div class="perfil-wrap">
-    <div class="perfil-card">
-      <div class="avatar">
-        <span>👤</span>
-      </div>
+          <div class="perfil-info">
+            <h2 class="perfil-nome">{{ usuario.nome }} {{ usuario.sobrenome }}</h2>
+            <span class="perfil-badge">{{ usuario.tipo }}</span>
+          </div>
+        </div>
 
-      <div class="perfil-info">
-        <h2 class="perfil-nome">{{ usuario.nome }} {{ usuario.sobrenome }}</h2>
-        <span class="perfil-badge">{{ usuario.tipo }}</span>
-      </div>
-    </div>
+        <div class="dados-grid">
+          <div class="dado-item">
+            <span class="dado-label">Nome completo</span>
+            <span class="dado-valor">{{ usuario.nome }} {{ usuario.sobrenome }}</span>
+          </div>
 
-    <div class="dados-grid">
-      <div class="dado-item">
-        <span class="dado-label">Nome completo</span>
-        <span class="dado-valor">{{ usuario.nome }} {{ usuario.sobrenome }}</span>
-      </div>
+          <div class="dado-item">
+            <span class="dado-label">E-mail</span>
+            <span class="dado-valor">{{ usuario.email }}</span>
+          </div>
 
-      <div class="dado-item">
-        <span class="dado-label">E-mail</span>
-        <span class="dado-valor">{{ usuario.email }}</span>
-      </div>
+          <div class="dado-item">
+            <span class="dado-label">CPF</span>
+            <span class="dado-valor">{{ usuario.cpf }}</span>
+          </div>
 
-      <div class="dado-item">
-        <span class="dado-label">CPF</span>
-        <span class="dado-valor">{{ usuario.cpf }}</span>
-      </div>
+          <div class="dado-item">
+            <span class="dado-label">Telefone</span>
+            <span class="dado-valor">{{ usuario.telefone }}</span>
+          </div>
 
-      <div class="dado-item">
-        <span class="dado-label">Telefone</span>
-        <span class="dado-valor">{{ usuario.telefone }}</span>
+          <div class="dado-item">
+            <span class="dado-label">Status</span>
+            <span class="dado-valor">Logado</span>
+          </div>
+        </div>
       </div>
-
-      <div class="dado-item">
-        <span class="dado-label">Status</span>
-        <span class="dado-valor">Logado</span>
-      </div>
-    </div>
-  </div>
-{% else %}
-  <div class="form-card" style="max-width: 620px; margin: 0 auto; text-align: center; padding: 3rem;">
-    <h2>Dados da conta indisponíveis</h2>
-    <p style="margin: 1rem 0 2rem; color: #9ca3af;">
-      Faça login para acessar sua conta.
-    </p>
-    <a href="{% url 'login' %}" class="btn-gold">Entrar</a>
-  </div>
-{% endif %}
+    {% else %}
       <div class="form-card" style="max-width: 620px; margin: 0 auto; text-align: center; padding: 3rem;">
         <h2>Dados da conta indisponíveis</h2>
         <p style="margin: 1rem 0 2rem; color: #9ca3af;">
-          Esta página não recebe dados de usuário diretamente no template. Faça login para acessar sua conta.
+          Faça login para acessar sua conta.
         </p>
         <a href="{% url 'login' %}" class="btn-gold">Entrar</a>
       </div>
