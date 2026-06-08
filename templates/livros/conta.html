@@ -41,11 +41,11 @@
 
 {% if usuario %}
   <div class="perfil-wrap">
-
     <div class="perfil-card">
       <div class="avatar">
         <span>👤</span>
       </div>
+
       <div class="perfil-info">
         <h2 class="perfil-nome">{{ usuario.nome }} {{ usuario.sobrenome }}</h2>
         <span class="perfil-badge">{{ usuario.tipo }}</span>
@@ -78,9 +78,17 @@
         <span class="dado-valor">Logado</span>
       </div>
     </div>
-
   </div>
 {% else %}
+  <div class="form-card" style="max-width: 620px; margin: 0 auto; text-align: center; padding: 3rem;">
+    <h2>Dados da conta indisponíveis</h2>
+    <p style="margin: 1rem 0 2rem; color: #9ca3af;">
+      Faça login para acessar sua conta.
+    </p>
+    <a href="{% url 'login' %}" class="btn-gold">Entrar</a>
+  </div>
+{% endif %}
+
       <div class="form-card" style="max-width: 620px; margin: 0 auto; text-align: center; padding: 3rem;">
         <h2>Dados da conta indisponíveis</h2>
         <p style="margin: 1rem 0 2rem; color: #9ca3af;">
