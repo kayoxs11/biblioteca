@@ -1,123 +1,155 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Biblioteca — Acervo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
-  <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca — Acervo</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/acervo.css' %}">
 </head>
-<body>
+<body class="body-dashboard">
+    <nav class="navbar">
+        <a href="{% url 'acervo' %}" class="nav-logo">
+            <div class="logo-icon">📚</div>
+            <span class="logo-text">Biblioteca</span>
+        </a>
 
-  <nav class="navbar">
-    <div class="nav-logo">
-      <div class="logo-icon">📚</div>
-      <span class="logo-text">Biblioteca</span>
-    </div>
-    <div class="nav-links">
-      <a href="{% url 'acervo' %}" class="nav-link active">Acervo</a>
-      <a href="{% url 'gerenciar' %}" class="nav-link">Gerenciar</a>
-      <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
-    </div>
-    <a href="{% url 'novo_livro' %}" class="nav-btn">+ Novo livro</a>
-  </nav>
+        <button class="menu-toggle" id="mobile-menu" type="button" aria-label="Abrir menu">
+            ☰
+        </button>
 
-  <main class="main-content">
+        <div class="nav-links" id="nav-menu">
+            <a href="{% url 'acervo' %}" class="nav-link active">Acervo</a>
+            <a href="{% url 'gerenciar' %}" class="nav-link">Gerenciar</a>
+            <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
+        </div>
+    </nav>
 
-    <div class="page-header">
-      <div>
-        <p class="page-label">GERENCIAMENTO DE ACERVO</p>
-        <h1 class="page-title">Livros cadastrados</h1>
-        <p class="page-sub">Consulte, filtre e gerencie os livros registrados na biblioteca.</p>
-      </div>
-      <a href="{% url 'novo_livro' %}" class="btn-gold">+ Novo livro</a>
-    </div>
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <p class="page-label">GERENCIAMENTO DE ACERVO</p>
+                <h1 class="page-title">Livros cadastrados</h1>
+                <p class="page-sub">Consulte, filtre e gerencie os livros registrados na biblioteca.</p>
+            </div>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <span class="stat-num">{{ total }}</span>
-        <span class="stat-label">Total no acervo</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">{{ disponiveis }}</span>
-        <span class="stat-label">Disponíveis</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">{{ emprestados }}</span>
-        <span class="stat-label">Emprestados</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num">{{ reservados }}</span>
-        <span class="stat-label">Reservados</span>
-      </div>
-    </div>
+            <a href="{% url 'novo_livro' %}" class="btn-gold">
+                <span>+ Novo livro</span>
+            </a>
+        </header>
 
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="busca" placeholder="Buscar por título, autor ou ISBN..."/>
-    </div>
+        <section class="stats-row">
+            <div class="stat-card">
+                <span class="stat-num">{{ total }}</span>
+                <span class="stat-label">Total no acervo</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">{{ disponiveis }}</span>
+                <span class="stat-label">Disponíveis</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">{{ emprestados }}</span>
+                <span class="stat-label">Emprestados</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">{{ reservados }}</span>
+                <span class="stat-label">Reservados</span>
+            </div>
+        </section>
 
-    <div class="table-wrap">
-      <table class="livros-table">
-        <thead>
-          <tr>
-            <th>Capa</th>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>ISBN</th>
-            <th>Quantidade</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="tabela-body">
-          {% for livro in livros %}
-          <tr>
-            <td>
-              {% if livro.capa %}
-                <img src="{{ livro.capa.url }}" style="width:45px; height:60px; object-fit:cover; border-radius:6px;" alt="{{ livro.titulo }}">
-              {% else %}
-                <span style="font-size:1.8rem;">📖</span>
-              {% endif %}
-            </td>
-            <td><strong>{{ livro.titulo }}</strong></td>
-            <td>{{ livro.autor }}</td>
-            <td>{{ livro.isbn|default:"—" }}</td>
-            <td>{{ livro.quantidade }}</td>
-            <td>
-              {% if livro.quantidade > 0 %}
-                <span class="perfil-badge disponivel">Disponível</span>
-              {% else %}
-                <span class="perfil-badge emprestado">Indisponível</span>
-              {% endif %}
-            </td>
-            <td class="acoes">
-              {% if livro.quantidade > 0 %}
-                <a href="{% url 'reservar_livro' livro.id %}" class="btn-small btn-reservar">📌 Reservar</a>
-                <a href="{% url 'emprestar_livro' livro.id %}" class="btn-small btn-emprestar">📚 Emprestar</a>
-              {% else %}
-                <span style="color: #ef4444;">Indisponível</span>
-              {% endif %}
-            </td>
-          </tr>
-          {% empty %}
-          <tr><td colspan="7" style="text-align:center; padding:3rem;">Nenhum livro cadastrado.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </main>
+        <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="busca" placeholder="Buscar por título, autor ou ISBN...">
+        </div>
 
-  <script>
-    document.getElementById('busca').addEventListener('input', function () {
-      const termo = this.value.toLowerCase();
-      document.querySelectorAll('#tabela-body tr').forEach(row => {
-        if (row.classList.contains('empty-row')) return;
-        row.style.display = row.textContent.toLowerCase().includes(termo) ? '' : 'none';
-      });
-    });
-  </script>
+        <div class="table-wrap">
+            <table class="livros-table">
+                <thead>
+                    <tr>
+                        <th>Capa</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>ISBN</th>
+                        <th>Qtd</th>
+                        <th>Status</th>
+                        <th style="text-align:center;">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tabela-body">
+                    {% for livro in livros %}
+                    <tr>
+                        <td data-label="Capa">
+                            {% if livro.capa %}
+                                <img src="{{ livro.capa.url }}" class="book-cover" alt="{{ livro.titulo }}">
+                            {% else %}
+                                <span class="book-icon">📖</span>
+                            {% endif %}
+                        </td>
+
+                        <td data-label="Título"><strong>{{ livro.titulo }}</strong></td>
+                        <td data-label="Autor">{{ livro.autor }}</td>
+                        <td data-label="ISBN">{{ livro.isbn|default:"-" }}</td>
+                        <td data-label="Qtd">{{ livro.quantidade }}</td>
+
+                        <td data-label="Status">
+                            {% if livro.quantidade > 0 %}
+                                <span class="perfil-badge disponivel">Disponível</span>
+                            {% else %}
+                                <span class="perfil-badge emprestado">Indisponível</span>
+                            {% endif %}
+                        </td>
+
+                        <td data-label="Ações" class="acoes">
+                            {% if livro.quantidade > 0 %}
+                                <a href="{% url 'reservar_livro' livro.id %}" class="btn-small btn-reservar">📌 Reservar</a>
+                                <a href="{% url 'emprestar_livro' livro.id %}" class="btn-small btn-emprestar">🤝 Emprestar</a>
+                            {% else %}
+                                <span class="indisponivel-texto">Indisponível</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:3rem; color: var(--muted);">
+                            Nenhum livro cadastrado no momento.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        // Busca em tempo real
+        document.getElementById('busca').addEventListener('input', function () {
+            const termo = this.value.toLowerCase();
+            const linhas = document.querySelectorAll('#tabela-body tr');
+
+            linhas.forEach(row => {
+                const texto = row.textContent.toLowerCase();
+                row.style.display = texto.includes(termo) ? '' : 'none';
+            });
+        });
+
+        // Menu mobile
+        const menuToggle = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                navMenu.classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>
