@@ -124,16 +124,22 @@ def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         senha = request.POST.get('senha')
+
         try:
             usuario = Usuario.objects.get(email=email)
+
             if check_password(senha, usuario.senha):
+                request.session['usuario_id'] = usuario.id
+                request.session['usuario_nome'] = usuario.nome
+
                 messages.success(request, f'Bem-vindo, {usuario.nome}!')
                 return redirect('acervo')
             else:
                 messages.error(request, 'Senha incorreta.')
+
         except Usuario.DoesNotExist:
             messages.error(request, 'E-mail não encontrado.')
-    
+
     return render(request, 'livros/login.html')
 
 
