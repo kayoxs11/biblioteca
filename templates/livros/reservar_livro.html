@@ -4,9 +4,121 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reservar Livro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+  <style>
+    .livro-info-card {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .livro-capa-placeholder {
+      width: 80px;
+      height: 110px;
+      background: rgba(201,168,76,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .livro-capa-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .livro-detalhes h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #e8e6df;
+      margin-bottom: 0.5rem;
+    }
+    .livro-detalhes p {
+      font-size: 0.85rem;
+      color: #7a7870;
+      margin-bottom: 0.3rem;
+    }
+    .livro-detalhes p strong { color: #c9a84c; }
+    .badge-disponivel {
+      display: inline-block;
+      padding: 0.25rem 0.8rem;
+      background: rgba(92,186,138,0.15);
+      color: #5cba8a;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+    .form-card {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .aviso {
+      background: rgba(201,168,76,0.08);
+      border-left: 3px solid #c9a84c;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
+      font-size: 0.85rem;
+      color: #7a7870;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #2a2d35;
+      flex-wrap: wrap;
+    }
+    .btn-gold {
+      padding: 0.8rem 1.8rem;
+      background: #c9a84c;
+      color: #0e0f11;
+      font-weight: 700;
+      font-size: 0.88rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-gold:hover { background: #e8c96e; transform: translateY(-1px); }
+    .btn-outline {
+      padding: 0.8rem 1.5rem;
+      border: 1px solid #2a2d35;
+      color: #7a7870;
+      font-size: 0.88rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: #c9a84c; color: #c9a84c; }
+
+    @media (max-width: 600px) {
+      .livro-info-card { flex-direction: column; align-items: center; text-align: center; }
+      .livro-capa-placeholder { width: 100px; height: 140px; }
+      .form-actions { flex-direction: column; }
+      .btn-gold, .btn-outline { width: 100%; justify-content: center; }
+      .main-content { padding: 1.2rem 1rem 3rem; }
+      .page-title { font-size: 1.6rem; }
+    }
+  </style>
 </head>
 <body>
 
@@ -14,6 +126,11 @@
     <div class="nav-logo">
       <div class="logo-icon">📚</div>
       <span class="logo-text">Biblioteca</span>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
+      <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
+      <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
     </div>
     <a href="{% url 'acervo' %}" class="nav-btn">← Voltar ao Acervo</a>
   </nav>
@@ -23,23 +140,43 @@
       <div>
         <p class="page-label">RESERVA</p>
         <h1 class="page-title">Reservar livro</h1>
-        <p class="page-sub">Confirme a reserva do livro abaixo.</p>
+        <p class="page-sub">Confirme os dados e finalize sua reserva.</p>
       </div>
     </div>
 
-    <div class="form-card" style="max-width: 620px; margin: 0 auto;">
-      <h2 style="margin-bottom: 1rem; color: #1f2937;">{{ livro.titulo }}</h2>
-      <p><strong>Autor:</strong> {{ livro.autor }}</p>
-      <p><strong>ISBN:</strong> {{ livro.isbn|default:"—" }}</p>
-      <p><strong>Quantidade disponível:</strong> {{ livro.quantidade }}</p>
+    <div class="form-card">
 
-      <form method="POST" style="margin-top: 2rem;">
+      <!-- Info do livro -->
+      <div class="livro-info-card">
+        <div class="livro-capa-placeholder">
+          {% if livro.capa %}
+            <img src="{{ livro.capa.url }}" alt="Capa"/>
+          {% else %}
+            📖
+          {% endif %}
+        </div>
+        <div class="livro-detalhes">
+          <h2>{{ livro.titulo }}</h2>
+          <p><strong>Autor:</strong> {{ livro.autor }}</p>
+          <p><strong>ISBN:</strong> {{ livro.isbn|default:"—" }}</p>
+          <p><strong>Gênero:</strong> {{ livro.get_genero_display|default:"—" }}</p>
+          <p><strong>Exemplares disponíveis:</strong> {{ livro.quantidade }}</p>
+          <span class="badge-disponivel">✓ Disponível para reserva</span>
+        </div>
+      </div>
+
+      <div class="aviso">
+        📌 Ao confirmar, o livro ficará reservado no seu nome. Retire na biblioteca em até <strong>3 dias úteis</strong>.
+      </div>
+
+      <form method="POST">
         {% csrf_token %}
         <div class="form-actions">
           <a href="{% url 'acervo' %}" class="btn-outline">Cancelar</a>
           <button type="submit" class="btn-gold">✅ Confirmar Reserva</button>
         </div>
       </form>
+
     </div>
   </main>
 

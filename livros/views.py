@@ -204,3 +204,10 @@ def devolver_livro(request, emprestimo_id):
         messages.success(request, f'✅ "{emprestimo.livro.titulo}" devolvido com sucesso!')
     
     return redirect('gerenciar')
+
+def conta(request):
+    try:
+        usuario = Usuario.objects.first()  # temporário até ter login completo
+        return render(request, 'livros/conta.html', {'usuario': usuario})
+    except:
+        return render(request, 'livros/conta.html', {})

@@ -8,10 +8,88 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/acervo.css' %}"/>
+  <style>
+    .form-card input,
+    .form-card select,
+    .form-card textarea {
+      padding: 0.75rem 0.85rem 0.75rem 2.4rem;
+      background: #1d1f25;
+      border: 1px solid #2a2d35;
+      border-radius: 10px;
+      color: #e8e6df;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      appearance: none;
+    }
+    .form-card textarea {
+      padding: 0.75rem 1rem;
+      resize: vertical;
+      min-height: 110px;
+      background: #1d1f25;
+    }
+    .form-card input:focus,
+    .form-card select:focus,
+    .form-card textarea:focus {
+      border-color: #c9a84c;
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    }
+    .form-card input.erro { border-color: #e05c5c; }
+    .msg-erro {
+      color: #e05c5c;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+    .msg-erro.visivel { display: block; }
+    .upload-area {
+      cursor: pointer;
+      border: 2px dashed #2a2d35;
+      border-radius: 12px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: border-color 0.25s, background 0.25s;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .upload-area:hover { border-color: #c9a84c; background: rgba(201,168,76,0.04); }
+    .upload-preview {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.5rem;
+      color: #7a7870; font-size: 0.85rem;
+    }
+    .upload-icon { font-size: 2rem; }
+    #previewImg { width:100%; height:100%; object-fit:cover; border-radius:10px; display:none; }
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.8rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid #2a2d35;
+    }
+    .btn-submit {
+      padding: 0.8rem 2rem;
+      background: #c9a84c;
+      color: #0e0f11;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-submit:hover { background: #e8c96e; transform: translateY(-1px); }
+  </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">
       <div class="logo-icon">📚</div>
@@ -26,7 +104,6 @@
   </nav>
 
   <main class="main-content">
-
     <div class="page-header">
       <div>
         <p class="page-label">ACERVO</p>
@@ -37,12 +114,9 @@
     </div>
 
     <div class="form-card">
-
-      <!-- SEM JavaScript no submit — vai direto pro Django -->
-      <form method="POST" action="{% url 'novo_livro' %}" enctype="multipart/form-data">
+      <form method="POST" action="{% url 'novo_livro' %}" enctype="multipart/form-data" id="formLivro">
         {% csrf_token %}
 
-        <!-- Capa -->
         <div class="field">
           <label>Capa do livro (opcional)</label>
           <div class="upload-area" id="uploadArea">
@@ -51,7 +125,7 @@
               <p>Clique para escolher uma imagem</p>
               <small>JPG, PNG — opcional</small>
             </div>
-            <img id="previewImg" src="" alt="Preview" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:10px;"/>
+            <img id="previewImg" src="" alt="Preview"/>
             <input type="file" id="capa" name="capa" accept="image/*" style="display:none;"/>
           </div>
         </div>
@@ -60,17 +134,18 @@
           <div class="field">
             <label for="titulo">Título *</label>
             <div class="input-wrap">
-              <input type="text" id="titulo" name="titulo" placeholder="Ex: O Pequeno Príncipe" required/>
+              <input type="text" id="titulo" name="titulo" placeholder="Ex: O Pequeno Príncipe"/>
               <span class="icon">📖</span>
             </div>
+            <span class="msg-erro" id="erro-titulo">Informe o título do livro.</span>
           </div>
-
           <div class="field">
             <label for="autor">Autor *</label>
             <div class="input-wrap">
-              <input type="text" id="autor" name="autor" placeholder="Ex: Antoine de Saint-Exupéry" required/>
+              <input type="text" id="autor" name="autor" placeholder="Ex: Antoine de Saint-Exupéry"/>
               <span class="icon">✍️</span>
             </div>
+            <span class="msg-erro" id="erro-autor">Use apenas letras, espaços e acentos.</span>
           </div>
         </div>
 
@@ -82,13 +157,13 @@
               <span class="icon">🔢</span>
             </div>
           </div>
-
           <div class="field">
             <label for="ano">Ano de publicação</label>
             <div class="input-wrap">
               <input type="number" id="ano" name="ano" placeholder="Ex: 2024" min="1000" max="2099"/>
               <span class="icon">📅</span>
             </div>
+            <span class="msg-erro" id="erro-ano">Ano inválido (entre 1000 e 2099).</span>
           </div>
         </div>
 
@@ -110,39 +185,37 @@
               <span class="icon">🏷️</span>
             </div>
           </div>
-
           <div class="field">
             <label for="quantidade">Quantidade de exemplares *</label>
             <div class="input-wrap">
-              <input type="number" id="quantidade" name="quantidade" placeholder="Ex: 3" min="1" required/>
+              <input type="number" id="quantidade" name="quantidade" placeholder="Ex: 3" min="1"/>
               <span class="icon">🔢</span>
             </div>
+            <span class="msg-erro" id="erro-quantidade">Informe a quantidade (mínimo 1).</span>
           </div>
         </div>
 
         <div class="field">
           <label for="sinopse">Sinopse</label>
-          <textarea id="sinopse" name="sinopse" rows="4" placeholder="Breve descrição do livro..."></textarea>
+          <textarea id="sinopse" name="sinopse" placeholder="Breve descrição do livro..."></textarea>
         </div>
 
         <div class="form-actions">
           <a href="{% url 'acervo' %}" class="btn-outline">Cancelar</a>
           <button type="submit" class="btn-submit">CADASTRAR LIVRO</button>
         </div>
-
       </form>
     </div>
   </main>
 
   <script>
-    // Preview da capa — só visual, não interfere no envio
+    // Preview da capa
     const uploadArea = document.getElementById('uploadArea');
     const inputCapa  = document.getElementById('capa');
     const previewImg = document.getElementById('previewImg');
     const previewBox = document.getElementById('uploadPreview');
 
     uploadArea.addEventListener('click', () => inputCapa.click());
-
     inputCapa.addEventListener('change', function () {
       if (this.files[0]) {
         const reader = new FileReader();
@@ -154,7 +227,54 @@
         reader.readAsDataURL(this.files[0]);
       }
     });
-  </script>
 
+    // Bloquear caracteres especiais no autor em tempo real
+    document.getElementById('autor').addEventListener('input', function () {
+      this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s.]/g, '');
+    });
+
+    // Validação no submit
+    document.getElementById('formLivro').addEventListener('submit', function (e) {
+      let ok = true;
+
+      document.querySelectorAll('.msg-erro').forEach(el => el.classList.remove('visivel'));
+      document.querySelectorAll('input, select').forEach(el => el.classList.remove('erro'));
+
+      const titulo     = document.getElementById('titulo').value.trim();
+      const autor      = document.getElementById('autor').value.trim();
+      const ano        = document.getElementById('ano').value;
+      const quantidade = document.getElementById('quantidade').value;
+      const soLetras   = /^[a-zA-ZÀ-ÿ\s.]+$/;
+
+      if (!titulo) {
+        document.getElementById('erro-titulo').classList.add('visivel');
+        document.getElementById('titulo').classList.add('erro');
+        ok = false;
+      }
+      if (!autor) {
+        document.getElementById('erro-autor').textContent = 'Informe o autor do livro.';
+        document.getElementById('erro-autor').classList.add('visivel');
+        document.getElementById('autor').classList.add('erro');
+        ok = false;
+      } else if (!soLetras.test(autor)) {
+        document.getElementById('erro-autor').textContent = 'Use apenas letras, espaços e acentos.';
+        document.getElementById('erro-autor').classList.add('visivel');
+        document.getElementById('autor').classList.add('erro');
+        ok = false;
+      }
+      if (ano && (ano < 1000 || ano > 2099)) {
+        document.getElementById('erro-ano').classList.add('visivel');
+        document.getElementById('ano').classList.add('erro');
+        ok = false;
+      }
+      if (!quantidade || quantidade < 1) {
+        document.getElementById('erro-quantidade').classList.add('visivel');
+        document.getElementById('quantidade').classList.add('erro');
+        ok = false;
+      }
+
+      if (!ok) e.preventDefault();
+    });
+  </script>
 </body>
 </html>
