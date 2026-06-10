@@ -13,24 +13,44 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="nav-logo">
-            <div class="logo-icon">
+<nav class="navbar">
+
+    <a href="{% url 'acervo' %}" class="nav-logo">
+        <div class="logo-icon">
             <img src="{% static 'img/icons/book.png' %}" alt="Biblioteca">
-            </div>
-            <span class="logo-text">Biblioteca</span>
         </div>
+        <span class="logo-text">Biblioteca</span>
+    </a>
 
-        <div class="nav-links">
-            <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
-            <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
-            <a href="{% url 'conta' %}" class="nav-link active">Minha Conta</a>
-        </div>
+    <button class="menu-toggle" id="mobile-menu" type="button">
+        ☰
+    </button>
 
-        <a href="{% url 'cadastro' %}" class="nav-btn sair">
-            <img src="{% static 'img/icons/logout.png' %}" class="btn-icon">Sair
+    <div class="nav-links" id="nav-menu">
+
+        <a href="{% url 'acervo' %}" class="nav-link">
+            <img src="{% static 'img/icons/books.png' %}" class="nav-icon" alt="">
+            Acervo
         </a>
-    </nav>
+
+        <a href="{% url 'gerenciar' %}" class="nav-link">
+            <img src="{% static 'img/icons/check.png' %}" class="nav-icon" alt="">
+            Gerenciar
+        </a>
+
+        <a href="{% url 'conta' %}" class="nav-link">
+            <img src="{% static 'img/icons/user.png' %}" class="nav-icon" alt="">
+            Minha Conta
+        </a>
+
+    </div>
+
+    <a href="{% url 'cadastro' %}" class="nav-btn sair">
+        <img src="{% static 'img/icons/logout.png' %}" class="nav-icon" alt="">
+        Sair
+    </a>
+
+</nav>
 
     <main class="main-content">
 
@@ -136,7 +156,16 @@
 
     </main>
 
-    <script src="{% static 'js/script.js' %}"></script>
+<script>
+const menuToggle = document.getElementById('mobile-menu');
+const navMenu = document.getElementById('nav-menu');
+
+if(menuToggle){
+    menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('open');
+    });
+}
+</script>
 
 </body>
 </html>

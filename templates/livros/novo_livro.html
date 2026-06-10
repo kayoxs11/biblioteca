@@ -96,11 +96,22 @@
       <div class="logo-icon">📚</div>
       <span class="logo-text">Biblioteca</span>
     </div>
-    <div class="nav-links">
-      <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
-      <a href="{% url 'novo_livro' %}" class="nav-link active">Novo Livro</a>
-      <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
-    </div>
+    <div class="nav-links" id="nav-menu">
+  <a href="{% url 'acervo' %}" class="nav-link">
+    <img src="{% static 'img/icons/book.png' %}" alt="">
+    Acervo
+  </a>
+
+  <a href="{% url 'gerenciar' %}" class="nav-link">
+    <img src="{% static 'img/icons/check.png' %}" alt="">
+    Gerenciar
+  </a>
+
+  <a href="{% url 'conta' %}" class="nav-link">
+    <img src="{% static 'img/icons/user.png' %}" alt="">
+    Minha Conta
+  </a>
+</div>
     <a href="{% url 'acervo' %}" class="nav-btn">← Voltar</a>
   </nav>
 
@@ -111,7 +122,6 @@
         <h1 class="page-title">Cadastrar novo livro</h1>
         <p class="page-sub">Preencha as informações do livro para adicioná-lo ao acervo.</p>
       </div>
-      <a href="{% url 'acervo' %}" class="btn-outline">← Voltar ao acervo</a>
     </div>
 
     <div class="form-card">

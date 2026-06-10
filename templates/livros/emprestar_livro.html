@@ -167,18 +167,37 @@
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="nav-logo">
-      <div class="logo-icon">📚</div>
-      <span class="logo-text">Biblioteca</span>
-    </div>
+<nav class="navbar">
+
+    <a href="{% url 'acervo' %}" class="nav-logo">
+        <div class="logo-icon">
+            <img src="{% static 'img/icons/book.png' %}" alt="Biblioteca">
+        </div>
+        <span class="logo-text">Biblioteca</span>
+    </a>
+
     <div class="nav-links">
-      <a href="{% url 'acervo' %}" class="nav-link">Acervo</a>
-      <a href="{% url 'novo_livro' %}" class="nav-link">Novo Livro</a>
-      <a href="{% url 'conta' %}" class="nav-link">Minha Conta</a>
+        <a href="{% url 'acervo' %}" class="nav-link">
+            <img src="{% static 'img/icons/books.png' %}" alt="">
+            Acervo
+        </a>
+
+        <a href="{% url 'gerenciar' %}" class="nav-link">
+            <img src="{% static 'img/icons/check.png' %}" alt="">
+            Gerenciar
+        </a>
+
+        <a href="{% url 'conta' %}" class="nav-link">
+            <img src="{% static 'img/icons/user.png' %}" alt="">
+            Minha Conta
+        </a>
     </div>
-    <a href="{% url 'acervo' %}" class="nav-btn">← Voltar ao Acervo</a>
-  </nav>
+
+    <a href="{% url 'acervo' %}" class="nav-btn">
+        ← Voltar
+    </a>
+
+</nav>
 
   <main class="main-content">
     <div class="page-header">
