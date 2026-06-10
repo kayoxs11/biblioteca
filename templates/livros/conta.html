@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca — Minha Conta</title>
-
     {% load static %}
-
+    <link rel="icon" type="image/png" href="{% static 'img/icons/favicon.png' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/acervo.css' %}">
 </head>
@@ -16,7 +15,9 @@
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="nav-logo">
-            <div class="logo-icon">📚</div>
+            <div class="logo-icon">
+            <img src="{% static 'img/icons/book.png' %}" alt="Biblioteca">
+            </div>
             <span class="logo-text">Biblioteca</span>
         </div>
 
@@ -27,7 +28,7 @@
         </div>
 
         <a href="{% url 'cadastro' %}" class="nav-btn sair">
-            Sair →
+            <img src="{% static 'img/icons/logout.png' %}" class="btn-icon">Sair
         </a>
     </nav>
 
@@ -50,7 +51,7 @@
             <div class="perfil-card modern-card">
 
                 <div class="avatar">
-                    👤
+                    <img src="{% static 'img/icons/user.png' %}" class="profile-icon">
                 </div>
 
                 <div class="perfil-info">

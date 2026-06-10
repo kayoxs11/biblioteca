@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca — Acervo</title>
-
+    <link rel="icon" type="image/png" href="{% static 'img/icons/favicon.png' %}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/acervo.css' %}">
 </head>
 <body class="body-dashboard">
     <nav class="navbar">
         <a href="{% url 'acervo' %}" class="nav-logo">
-            <div class="logo-icon">📚</div>
+            <div class="logo-icon">
+            <img src="{% static 'img/icons/book.png' %}" alt="Biblioteca">
+            </div>
             <span class="logo-text">Biblioteca</span>
         </a>
 
@@ -87,8 +88,10 @@
                             {% if livro.capa %}
                                 <img src="{{ livro.capa.url }}" class="book-cover" alt="{{ livro.titulo }}">
                             {% else %}
-                                <span class="book-icon">📖</span>
-                            {% endif %}
+                                <img src="{% static 'img/icons/books.png' %}"
+                      class="book-cover"
+                      alt="Sem capa">
+                        {% endif %}
                         </td>
 
                         <td data-label="Título"><strong>{{ livro.titulo }}</strong></td>
@@ -106,8 +109,13 @@
 
                         <td data-label="Ações" class="acoes">
                             {% if livro.quantidade > 0 %}
-                                <a href="{% url 'reservar_livro' livro.id %}" class="btn-small btn-reservar">📌 Reservar</a>
-                                <a href="{% url 'emprestar_livro' livro.id %}" class="btn-small btn-emprestar">🤝 Emprestar</a>
+                            <a href="{% url 'reservar_livro' livro.id %}" class="btn-small btn-reservar">
+                                <img src="{% static 'img/icons/bookmark.png' %}" class="btn-icon" alt="">Reservar
+                                </a>
+                            <a href="{% url 'emprestar_livro' livro.id %}" class="btn-small btn-emprestar">
+                                <img src="{% static 'img/icons/education.png' %}" class="btn-icon" alt="">Emprestar
+                                </a>
+                                
                             {% else %}
                                 <span class="indisponivel-texto">Indisponível</span>
                             {% endif %}
