@@ -11,7 +11,7 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://web-production-0c637.up.railway.app",
+    "https://*.up.railway.app",
 ]
 
 INSTALLED_APPS = [
